@@ -11,14 +11,9 @@ SCOPES = [
     "openid",
     "https://www.googleapis.com/auth/contacts.readonly",
     "https://www.googleapis.com/auth/user.birthday.read",
-    "https://www.googleapis.com/auth/userinfo.profile"
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/user.emails.read",
 ]
-
-
-def create_creds():
-    """manage authentication flow for the app in google cloud"""
-    creds = None
-    return creds
 
 
 def main():
@@ -42,13 +37,14 @@ def main():
         with open("token.json", "w") as token:
             token.write(creds.to_json())
 
-    # creds = create_creds()
     try:
         people_service = build("people", "v1", credentials=creds)
 
         # Call the People API
         profile = people_service.people().get(resourceName="people/me", personFields="names,emailAddresses,birthdays").execute()
         print(profile)
+
+        print(f"\n\n{profile['emailAddresses'][0]['value']}")
         # print("List 10 connection names")
         # results = (
         #     people_service.people()

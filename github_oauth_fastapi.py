@@ -9,12 +9,13 @@ from starlette.responses import RedirectResponse
 load_dotenv()
 
 CLIENT_ID = os.getenv("CLIENT_ID")
-REDIRECT_URI = "http://localhost:8080/callback"
+REDIRECT_URI = os.getenv("REDIRECT_URI")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 
 
 # Generate the authorization URL
-auth_url = f"https://github.com/login/oauth/authorize?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=read:user"
+auth_url = f"https://github.com/login/oauth/authorize?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=user:email"
+# auth_url = f"https://github.com/login/oauth/authorize?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=read:user"
 
 app = FastAPI()
 
@@ -43,7 +44,8 @@ def get_access_token(code):
 
 def get_user_data(access_token):
     # GitHub API URL
-    api_url = "https://api.github.com/user"
+    # api_url = "https://api.github.com/user"
+    api_url = "https://api.github.com/user/emails"
 
     # Set headers with the access token
     headers = {
